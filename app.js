@@ -8,13 +8,14 @@ const path = require("path");
 const livereload = require("livereload");
 const connectLivereload = require("connect-livereload");
 const methodOverride = require("method-override");
+require("dotenv").config();
+
 
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(express.static("public"));
-
 
 
 // Method override
@@ -39,13 +40,13 @@ app.use(editRoute);
 
 
 // DB connect
-mongoose
-  .connect("mongodb+srv://todo-list:jeQVyJPKqNUpi5Vm@cluster0.3a7majm.mongodb.net/")
-  .then(() => {
-    app.listen(port, () => {
-      console.log(`http://localhost:${port}/`);
-    });
-  })
-  .catch((err) => {
-    console.log(err);
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => {
+  app.listen(port, () => {
+    console.log(`✅ Server running on port ${port}`);
   });
+})
+.catch(err => console.error("❌ MongoDB error:", err));
