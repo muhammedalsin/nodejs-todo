@@ -40,7 +40,7 @@ app.use(editRoute);
 
 // DB connect
 mongoose
-  .connect("mongodb://localhost:27017/all-data")
+  .connect(process.env.DATADB || "mongodb://localhost:27017/all-data")
   .then(() => {
     app.listen(port, () => {
       console.log(`http://localhost:${port}/`);
